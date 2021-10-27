@@ -6,15 +6,15 @@ services:
     - "9090:9090"
     depends_on:
       - db
-  db:
+  universitydb:
     image: postgres:10
     restart: always
-#    volumes:
-#      - ./db_scripts/docker-entrypoint-init.sh
+    volumes:
+      - ./db_scripts:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-#      POSTGRES_DB: POSTGRESQL
+      POSTGRES_DB: school_service
 
