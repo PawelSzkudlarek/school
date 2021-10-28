@@ -1,22 +1,40 @@
 package com.university.school.model.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class Student extends Person {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Student {
 
-    private boolean active;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @OneToOne(mappedBy = "student")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StudentIndex studentIndex;
 
     @ManyToMany(mappedBy = "students")

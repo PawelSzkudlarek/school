@@ -1,0 +1,8 @@
+Current:
+fix objectmapper which should handle SerializationFeature.FAIL_ON_EMPTY_BEANS
+
+
+Future Features:
+- Security
+- Post wall
+- Library

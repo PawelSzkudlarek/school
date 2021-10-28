@@ -1,10 +1,10 @@
 package com.university.school.service;
 
-import com.university.school.model.dto.StudentDto;
-import com.university.school.model.entity.Login;
-import com.university.school.model.entity.PersonalDetails;
+import com.university.school.model.dto.StudentForm;
 import com.university.school.model.entity.Student;
+import com.university.school.repository.PersonRepository;
 import com.university.school.repository.StudentRepository;
+import com.university.school.util.EntityMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +15,15 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final PersonRepository personRepository;
 
     public Optional<Student> findStudent(long id) {
-        return studentRepository.findById(id);
-    }
-
-    public void saveStudent(StudentDto studentDto) {
-        studentRepository.save(mapToEntity(studentDto));
-    }
-
-    private Student mapToEntity(StudentDto studentDto) {
-        final Student student = new Student();
-        student.setLogin(Login.of(studentDto.getLogin()));
-        student.setPersonalDetails(new PersonalDetails());
+        final Optional<Student> student = studentRepository.findById(id);
         return student;
     }
+
+    public void saveStudent(StudentForm studentForm) {
+        studentRepository.save(EntityMapper.mapFormToEntity(studentForm));
+    }
+
 }

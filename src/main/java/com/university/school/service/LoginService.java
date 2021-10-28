@@ -10,7 +10,15 @@ public class LoginService {
 
     private final LoginRepository loginRepository;
 
-    private boolean isUniqueLogin(String login){
-        return loginRepository.existsByValue(login);
+    public boolean isUniqueLogin(String login) {
+        return !loginRepository.existsByValue(login);
     }
+
+//    @PostConstruct
+//    public void addSomeLogins(){
+//        loginRepository.save(Login.of("Pablo"));
+//        loginRepository.save(Login.of("Pablo1"));
+//        loginRepository.save(Login.of("Pablo2"));
+//        loginRepository.save(Login.of("Pablo3"));
+//    }
 }

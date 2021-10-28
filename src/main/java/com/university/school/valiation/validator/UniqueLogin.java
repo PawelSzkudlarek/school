@@ -1,8 +1,7 @@
-package com.university.school.valiation.annotation;
+package com.university.school.valiation.validator;
 
 import javax.validation.Constraint;
-
-import com.university.school.valiation.validator.UniqueLoginValidator;
+import javax.validation.Payload;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,8 +9,14 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ElementType.FIELD})
-@Retention(RUNTIME)
 @Constraint(validatedBy = UniqueLoginValidator.class)
+@Target(ElementType.FIELD)
+@Retention(RUNTIME)
 public @interface UniqueLogin {
+
+    String message() default "Provided login is not unique.";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }
