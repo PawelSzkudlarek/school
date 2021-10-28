@@ -1,8 +1,12 @@
 Current:
-fix objectmapper which should handle SerializationFeature.FAIL_ON_EMPTY_BEANS
-
+//fix objectmapper which should handle SerializationFeature.FAIL_ON_EMPTY_BEANS
+- non unique login should return some hints/examples unique logins
+- created student in response should get his login and first password
+- pesel should be unique value for every person can't be identifier coz get send it explicity
+- /api not working
 
 Future Features:
 - Security
 - Post wall
 - Library
+- hateoas for open API https://www.youtube.com/watch?v=QwpvukCGrmc

@@ -1,13 +1,10 @@
 package com.university.school.model.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
+import com.university.school.model.enums.PersonType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +26,10 @@ public class Teacher {
     @OneToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PersonType personType;
 
     private String mainSubject;
 }

@@ -1,7 +1,6 @@
 package com.university.school.model.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 import com.university.school.valiation.validator.UniqueLogin;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,11 @@ public class StudentForm {
     private String name;
     @NotNull
     private String lastName;
-    private String personalId;
+
+    @Size
+    @Min(11)
+    @Max(11)
+    private String personalNumber;
 
     //Address
     @NotNull
@@ -38,13 +41,4 @@ public class StudentForm {
 
     @Pattern(regexp = "^([0-9]{9})$")
     private String mobileNr;
-
-    @Override
-    public String toString() {
-        return "StudentDto{" +
-                "uniqueLogin='" + login + '\'' +
-                ", name='" + name + '\'' +
-                ", lastname='" + lastName + '\'' +
-                '}';
-    }
 }

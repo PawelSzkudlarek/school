@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.university.school.model.enums.PersonType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,15 +27,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "personDetails"})
 public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name="person_details_id", referencedColumnName = "id")
+    @JoinColumn(unique = true)
     private PersonDetails personDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
