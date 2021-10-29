@@ -16,9 +16,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StudentForm {
 
+    //User
     @NotNull
     @UniqueLogin
     private String login;
+
+    @NotEmpty
+    @Email
+    private String email;
 
     //Personal Data
     @NotNull
@@ -26,9 +31,8 @@ public class StudentForm {
     @NotNull
     private String lastName;
 
-    @Size
-    @Min(11)
-    @Max(11)
+    @NotEmpty
+    @Digits(fraction = 0, integer = 11)
     private String personalNumber;
 
     //Address

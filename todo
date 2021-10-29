@@ -1,9 +1,8 @@
 Current:
 //fix objectmapper which should handle SerializationFeature.FAIL_ON_EMPTY_BEANS
 - non unique login should return some hints/examples unique logins
-- created student in response should get his login and first password
 - pesel should be unique value for every person can't be identifier coz get send it explicity
-- /api not working
+- change to higher lvl of rest rest of controllers
 - create standard response from error handler, build mapper per Exception type
 
 Future Features:

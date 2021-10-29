@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.university.school.model.enums.PersonType;
 import lombok.AllArgsConstructor;
@@ -40,6 +39,8 @@ public class Person {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Login login;
+
+    private String email;
 
     @NotNull
     @Enumerated(EnumType.STRING)

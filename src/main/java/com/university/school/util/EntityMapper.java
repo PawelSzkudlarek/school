@@ -17,6 +17,7 @@ public class EntityMapper {
         return Student.builder()
                 .person(Person.builder()
                         .login(Login.of(studentForm.getLogin()))
+                        .email(studentForm.getEmail())
                         .personType(PersonType.STUDENT)
                         .personDetails(PersonDetails.builder()
                                 .name(studentForm.getName())
