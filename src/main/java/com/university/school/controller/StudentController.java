@@ -27,7 +27,7 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<Student> findActiveStudent(@RequestParam long id) {
-        return new ResponseEntity(studentService.findActiveStudent(id), HttpStatus.OK);
+        return new ResponseEntity<>(studentService.findActiveStudent(id), HttpStatus.OK);
     }
 
     @PostMapping

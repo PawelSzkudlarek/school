@@ -1,17 +1,32 @@
 package com.university.school.configuration;
 
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import com.university.school.model.dto.ErrorDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException exception) {
-        return ResponseEntity.badRequest().body(
-                String.format("Validation failed on field '%s', in reason: %s",
-                        exception.getFieldError().getField(), exception.getFieldError().getDefaultMessage()));
+    public ResponseEntity<List<ErrorDto>> handleValidationException(MethodArgumentNotValidException exception) {
+        return ResponseEntity.badRequest().body(mapBindingResultToDto(exception.getBindingResult().getFieldErrors()));
+    }
+
+    @ExceptionHandler(UnrecognizedPropertyException.class)
+    public ResponseEntity<Object> handleValidationException(UnrecognizedPropertyException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
+
+    private List<ErrorDto> mapBindingResultToDto(List<FieldError> errors) {
+        return errors.stream()
+                .map(error -> ErrorDto.builder().field(error.getField()).message(error.getDefaultMessage()).build())
+                .collect(Collectors.toList());
     }
 }
