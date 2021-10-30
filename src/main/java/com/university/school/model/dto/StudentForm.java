@@ -17,8 +17,8 @@ import lombok.Setter;
 public class StudentForm {
 
     //User
-    @NotNull
-    @UniqueLogin
+    @NotEmpty
+    @UniqueLogin(hints = {"personalNumber"})
     private String login;
 
     @NotEmpty
