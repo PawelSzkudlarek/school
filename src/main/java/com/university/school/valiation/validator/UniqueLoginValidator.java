@@ -18,7 +18,6 @@ public class UniqueLoginValidator implements ConstraintValidator<UniqueLogin, St
 
     private final LoginService loginService;
     private List<String> hints;
-    private String fieldName;
 
     @Override
     public void initialize(UniqueLogin login){

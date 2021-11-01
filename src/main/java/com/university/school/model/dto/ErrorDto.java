@@ -1,13 +1,15 @@
 package com.university.school.model.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ErrorDto {
 
     private String field;
