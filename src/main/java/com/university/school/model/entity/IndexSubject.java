@@ -19,5 +19,5 @@ public class IndexSubject {
 
     private String schoolSubject;
 
-    private int note;
+    private int grade;
 }

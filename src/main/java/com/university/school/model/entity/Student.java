@@ -11,13 +11,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -42,4 +45,22 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private List<UniversityGroup> universityGroups;
 
+    private String fieldOfStudy;
+    private Date educationStart;
+    private int semester;
+
+    // later on crate batch for calculation
+    @JsonIgnore
+    private double averageGrade;
+
+    public double getAverageGrade() {
+//        Optional.ofNullable(getStudentIndex())
+//                .map(StudentIndex::getIndexSubjectList)
+//                .orElse(null)
+//                .stream()
+//                .mapToDouble(IndexSubject::getGrade).sum();
+//
+        return getStudentIndex().getIndexSubjectList().stream().mapToDouble(IndexSubject::getGrade).sum()
+                / getStudentIndex().getIndexSubjectList().size();
+    }
 }

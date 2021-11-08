@@ -30,8 +30,6 @@ public class PersonDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String name;
-    private String lastName;
     private String pesel;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
