@@ -2,6 +2,7 @@ package com.university.school.controller;
 
 import javax.validation.Valid;
 
+import com.university.school.model.dto.StudentDetailsDto;
 import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.StudentRequest;
 import com.university.school.model.entity.Student;
@@ -44,7 +45,7 @@ public class StudentController {
     public ResponseEntity<Void> deleteStudent(@RequestParam long id) {
         log.info(String.format("Receive request for delete student with id: %s", id));
         studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(headers = "onlyActive=false")
@@ -63,4 +64,8 @@ public class StudentController {
         return studentService.findStudents(request);
     }
 
+    @GetMapping("/details")
+    public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam long id){
+        return ResponseEntity.of(studentService.getStudentDetails(id));
+    }
 }

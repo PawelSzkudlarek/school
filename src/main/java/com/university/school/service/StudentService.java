@@ -1,5 +1,6 @@
 package com.university.school.service;
 
+import com.university.school.model.dto.StudentDetailsDto;
 import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.StudentRequest;
 import com.university.school.model.entity.Person;
@@ -93,4 +94,14 @@ public class StudentService {
                 : builder.desc(root.get(request.getFieldToOrder()));
     }
 
+    public Optional<StudentDetailsDto> getStudentDetails(long id) {
+        final Optional<Student> student = studentRepository.findById(id);
+        return student.map(this::mapStudentDetailsDto).or(Optional::empty);
+    }
+    // supply by rest of fields
+    private StudentDetailsDto mapStudentDetailsDto(Student student){
+        return StudentDetailsDto.builder()
+                .name(student.getPerson().getName())
+                .build();
+    }
 }
