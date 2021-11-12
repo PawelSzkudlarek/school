@@ -1,19 +1,24 @@
 package com.university.school.controller;
 
-import com.university.school.model.dto.StudentForm;
-import com.university.school.model.entity.Student;
+import javax.validation.Valid;
+
+import com.university.school.model.dto.TeacherForm;
 import com.university.school.model.entity.Teacher;
 import com.university.school.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
 @RestController
-@RequestMapping("/school/teachers")
+@RequestMapping("/school/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
 
@@ -25,8 +30,14 @@ public class TeacherController {
     }
 
     @PostMapping("/addStudent")
-    public void addStudent(@Valid @RequestBody StudentForm studentForm){
-        log.info(String.format("receive new student form %s", studentForm));
-        teacherService.saveTeacher(studentForm);
+    public void addStudent(@Valid @RequestBody TeacherForm teacherForm) {
+        log.info(String.format("receive new student form %s", teacherForm));
+        teacherService.saveTeacher(teacherForm);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@RequestParam long id) {
+        teacherService.deleteTeacher(id);
+        return ResponseEntity.noContent().build();
     }
 }

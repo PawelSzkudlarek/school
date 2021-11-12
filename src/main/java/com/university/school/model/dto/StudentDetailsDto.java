@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Builder
@@ -16,7 +14,7 @@ public class StudentDetailsDto {
     private String lastName;
     private int semester;
     private String pesel;
-    private List<String> phoneNumbers;
+    private String phoneNumbers;
     private Address address;
 
 }

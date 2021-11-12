@@ -49,6 +49,9 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
+
+    //set active = false
+    // test hibernate session
     public void deleteStudent(long id) {
         studentRepository.deleteById(id);
 
@@ -98,10 +101,15 @@ public class StudentService {
         final Optional<Student> student = studentRepository.findById(id);
         return student.map(this::mapStudentDetailsDto).or(Optional::empty);
     }
-    // supply by rest of fields
+
     private StudentDetailsDto mapStudentDetailsDto(Student student){
         return StudentDetailsDto.builder()
+                .semester(student.getSemester())
                 .name(student.getPerson().getName())
+                .lastName(student.getPerson().getLastName())
+                .pesel(student.getPerson().getPersonDetails().getPesel())
+                .phoneNumbers(student.getPerson().getPersonDetails().getPhoneNumbers().get(0).getNumber())
+                .address(student.getPerson().getPersonDetails().getAddress())
                 .build();
     }
 }
