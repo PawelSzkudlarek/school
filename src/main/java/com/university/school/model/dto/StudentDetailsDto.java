@@ -13,8 +13,8 @@ public class StudentDetailsDto {
     private String name;
     private String lastName;
     private int semester;
-    private String pesel;
-    private String phoneNumbers;
+    private String personalNumber;
+    private String phoneNo;
     private Address address;
 
 }

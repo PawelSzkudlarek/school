@@ -4,8 +4,10 @@ import com.university.school.model.dto.StudentDetailsDto;
 import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.StudentRequest;
 import com.university.school.model.entity.Person;
+import com.university.school.model.entity.PhoneNumber;
 import com.university.school.model.entity.Student;
 import com.university.school.model.entity.User;
+import com.university.school.repository.PersonRepository;
 import com.university.school.repository.StudentRepository;
 import com.university.school.repository.UserRepository;
 import com.university.school.util.EntityMapper;
@@ -26,6 +28,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
+    private final PersonRepository personRepository;
     private final EntityManager entityManager;
 
     public Optional<Student> findStudent(long id) {
@@ -53,8 +56,7 @@ public class StudentService {
     //set active = false
     // test hibernate session
     public void deleteStudent(long id) {
-        studentRepository.deleteById(id);
-
+        studentRepository.setStudentToInactive(id);
     }
 
     private String generatePassword() {
@@ -107,8 +109,8 @@ public class StudentService {
                 .semester(student.getSemester())
                 .name(student.getPerson().getName())
                 .lastName(student.getPerson().getLastName())
-                .pesel(student.getPerson().getPersonDetails().getPesel())
-                .phoneNumbers(student.getPerson().getPersonDetails().getPhoneNumbers().get(0).getNumber())
+                .personalNumber(student.getPerson().getPersonDetails().getPesel())
+                .phoneNo(student.getPerson().getPersonDetails().getPhoneNumbers().stream().findFirst().map(PhoneNumber::getNumber).orElse(null))
                 .address(student.getPerson().getPersonDetails().getAddress())
                 .build();
     }

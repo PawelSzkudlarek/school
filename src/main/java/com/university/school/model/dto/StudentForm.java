@@ -40,9 +40,9 @@ public class StudentForm {
     private String city;
     private String street;
     private String postCode;
-    private String houseNr;
-    private String apartmentNr;
+    private String houseNo;
+    private String apartmentNo;
 
     @Pattern(regexp = "^([0-9]{9})$")
-    private String mobileNr;
+    private String phoneNo;
 }

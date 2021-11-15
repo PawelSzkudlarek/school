@@ -19,24 +19,31 @@ import java.util.List;
 public class EntityMapper {
 
     public static final String VODAFONE = "Vodafone";
+    public static final String T_MOBILE = "T-Mobile";
 
     public static Teacher mapFormToEntity(TeacherForm form){
-        final PersonDetails personDetails = buildPersonDetails(form.getPersonalNumber(), form.getPhoneNo(), form.getCity(), form.getStreet(), form.getHouseNo());
+        final PersonDetails personDetails = buildPersonDetails(form.getPersonalNumber(), form.getPhoneNo(), form.getCity(), form.getStreet(), form.getHouseNo(), VODAFONE);
         final Person person = buildPerson(form.getName(), form.getLastName(), form.getLogin(), form.getEmail(), PersonType.TEACHER, personDetails);
         return Teacher.builder().person(person).build();
     }
 
-    private static PersonDetails buildPersonDetails(String personalNumber, String phoneNo, String city, String street, String houseNo) {
+    public static Student mapFormToEntity(StudentForm form){
+        final PersonDetails personDetails = buildPersonDetails(
+                form.getPersonalNumber(), form.getPhoneNo(), form.getCity(), form.getStreet(), form.getHouseNo(), T_MOBILE);
+        final Person person = buildPerson(form.getName(), form.getLastName(), form.getLogin(), form.getEmail(), PersonType.STUDENT, personDetails);
+        return Student.builder().person(person).build();
+    }
+
+    private static PersonDetails buildPersonDetails(String personalNumber, String phoneNo, String city, String street, String houseNo, String mobileOperator) {
         return PersonDetails.builder()
                 .pesel(personalNumber)
-                .phoneNumbers(List.of(PhoneNumber.of(phoneNo, VODAFONE)))
+                .phoneNumbers(List.of(PhoneNumber.of(phoneNo, mobileOperator)))
                 .address(Address.builder()
                         .city(city)
                         .street(street)
-                        .houseNr(houseNo)
+                        .houseNo(houseNo)
                         .build())
                 .build();
-
     }
 
     private static Person buildPerson(String name, String lastName, String login,
@@ -48,24 +55,6 @@ public class EntityMapper {
                 .email(email)
                 .personType(personType)
                 .personDetails(personDetails)
-                .build();
-    }
-
-    public static Student mapFormToEntity(StudentForm studentForm) {
-        return Student.builder()
-                .person(Person.builder()
-                        .name(studentForm.getName())
-                        .lastName(studentForm.getLastName())
-                        .login(Login.of(studentForm.getLogin()))
-                        .email(studentForm.getEmail())
-                        .personType(PersonType.STUDENT)
-                        .personDetails(PersonDetails.builder()
-                                .address(Address.builder()
-                                        .city(studentForm.getCity())
-                                        .street(studentForm.getStreet())
-                                        .build())
-                                .build())
-                        .build())
                 .build();
     }
 

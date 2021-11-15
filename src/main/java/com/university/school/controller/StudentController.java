@@ -66,6 +66,7 @@ public class StudentController {
 
     @GetMapping("/details")
     public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam long id){
+        log.info("Get student detils by id:" + id);
         return ResponseEntity.of(studentService.getStudentDetails(id));
     }
 }

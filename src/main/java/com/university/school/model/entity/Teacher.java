@@ -23,13 +23,9 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private PersonType personType;
 
     private String mainSubject;
 }
