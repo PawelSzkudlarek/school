@@ -6,6 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.university.school.model.enums.WorkArea;
 import com.university.school.valiation.validator.UniqueLogin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +20,13 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherForm {
+public class EmployeeForm {
 
     //User
     @NotEmpty
     @UniqueLogin
     private String login;
+    private String password;
 
     @NotEmpty
     @Email
@@ -35,6 +37,8 @@ public class TeacherForm {
     private String name;
     @NotNull
     private String lastName;
+
+    private WorkArea workArea;
 
     @NotEmpty
     @Digits(fraction = 0, integer = 11)

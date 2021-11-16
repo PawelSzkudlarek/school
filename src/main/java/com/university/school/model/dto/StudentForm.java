@@ -16,25 +16,29 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StudentForm {
 
-    //User
-    @NotEmpty
-    @UniqueLogin(hints = {"personalNumber"})
-    private String login;
-
-    @NotEmpty
-    @Email
-    private String email;
-
     //Personal Data
     @NotNull
     private String name;
     @NotNull
     private String lastName;
+    @NotEmpty
+    @Email
+    private String email;
+
+    //User
+    @NotEmpty
+    @UniqueLogin(hints = {"personalNumber"})
+    private String login;
+    private String password;
+
+    @Pattern(regexp = "^([0-9]{9})$")
+    private String phoneNo;
 
     @NotEmpty
     @Digits(fraction = 0, integer = 11)
     private String personalNumber;
 
+    private int semester;
     //Address
     @NotNull
     private String city;
@@ -42,7 +46,4 @@ public class StudentForm {
     private String postCode;
     private String houseNo;
     private String apartmentNo;
-
-    @Pattern(regexp = "^([0-9]{9})$")
-    private String phoneNo;
 }

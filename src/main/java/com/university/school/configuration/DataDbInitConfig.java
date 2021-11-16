@@ -1,41 +1,64 @@
 package com.university.school.configuration;
 
+import javax.annotation.PostConstruct;
+
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.university.school.model.dto.EmployeeForm;
 import com.university.school.model.dto.StudentForm;
-import com.university.school.model.dto.TeacherForm;
+import com.university.school.repository.EmployeeRepository;
 import com.university.school.repository.StudentRepository;
-import com.university.school.repository.TeacherRepository;
-import com.university.school.service.TeacherService;
 import com.university.school.util.EntityMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class DataDbInitConfig {
 
     private final StudentRepository studentRepository;
-    private final TeacherRepository teacherRepository;
+    private final EmployeeRepository employeeRepository;
 
     @PostConstruct
-    void initDbData() {
+    void initDbData() throws IOException {
+        final Resource resource = new ClassPathResource("MOCK_DATA.csv");
+        CsvMapper mapper = new CsvMapper().enable(CsvParser.Feature.SKIP_EMPTY_LINES);
+        CsvSchema csvSchema = mapper.schema().withHeader().withColumnSeparator(',');
+
+        try (InputStream is = resource.getInputStream()) {
+            MappingIterator<Map<String, String>> iterator =
+                    mapper.readerForMapOf(String.class).with(csvSchema).readValues(is);
+            while (iterator.hasNext()) {
+
+            }
+        }
+
+
         getStudents().forEach(studentForm -> studentRepository.save(EntityMapper.mapFormToEntity(studentForm)));
-        getTeachers().forEach(teacherForm -> teacherRepository.save(EntityMapper.mapFormToEntity(teacherForm)));
+        getTeachers().forEach(employeeForm -> employeeRepository.save(EntityMapper.mapFormToTeacherEntity(employeeForm)));
     }
 
-    private List<TeacherForm> getTeachers() {
-        TeacherForm teacher1 = TeacherForm.builder().login("DominoLogin").name("Domino")
+    private List<EmployeeForm> getTeachers() {
+        EmployeeForm teacher1 = EmployeeForm.builder().login("DominoLogin").name("Domino")
                 .lastName("Jahas").city("Gdansk").street("Rdestowa").houseNo("1882").postCode("80-333").phoneNo("123456789").build();
-        TeacherForm teacher2 = TeacherForm.builder().login("DamianLogin").name("Damian")
+        EmployeeForm teacher2 = EmployeeForm.builder().login("DamianLogin").name("Damian")
                 .lastName("Wasik").city("Morag").street("Kwiatowa").houseNo("162").postCode("80-366").phoneNo("5555555555").build();
-        TeacherForm teacher3 = TeacherForm.builder().login("GlusLogin").name("Chorazy")
+        EmployeeForm teacher3 = EmployeeForm.builder().login("GlusLogin").name("Chorazy")
                 .lastName("Glus").city("Olsztynek").street("zimowa").houseNo("122").postCode("80-388").phoneNo("666666667").build();
         return List.of(teacher1, teacher2, teacher3);
     }
 
     private List<StudentForm> getStudents() {
+
         final StudentForm student1 = StudentForm.builder().login("DominoLogin").name("Domino")
                 .lastName("Jahas").city("Gdansk").personalNumber("09876543210").street("Rdestowa").houseNo("1882").postCode("80-333").phoneNo("123456789").build();
 

@@ -25,7 +25,7 @@ public class Address {
     private long id;
     private String city;
     private String street;
-    private String postCode;
     private String houseNo;
     private String apartmentNr;
+    private String postCode;
 }
