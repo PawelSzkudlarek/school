@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.university.school.model.enums.PersonType;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class Person {
     private String phoneNo;
     private String email;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Address address;
 

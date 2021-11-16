@@ -2,10 +2,7 @@ package com.university.school.util;
 
 import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.EmployeeForm;
-import com.university.school.model.entity.Person;
-import com.university.school.model.entity.Student;
-import com.university.school.model.entity.Employee;
-import com.university.school.model.entity.User;
+import com.university.school.model.entity.*;
 import com.university.school.model.enums.PersonType;
 import com.university.school.model.enums.WorkArea;
 import lombok.AccessLevel;
@@ -44,6 +41,13 @@ public class EntityMapper {
                         .user(new User(form.getLogin(), form.getPassword(), form.getEmail()))
                         .email(form.getEmail())
                         .personType(PersonType.STUDENT)
+                        .address(Address.builder()
+                                .city(form.getCity())
+                                .street(form.getStreet())
+                                .houseNo(form.getHouseNo())
+                                .apartmentNr(form.getApartmentNo())
+                                .postCode(form.getPostCode())
+                                .build())
                         .build())
                 .semester(form.getSemester())
                 .build();

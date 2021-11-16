@@ -47,19 +47,4 @@ public class Student {
     private String fieldOfStudy;
     private Date educationStart;
     private int semester;
-
-    // later on crate batch for calculation
-    @JsonIgnore
-    private double averageGrade;
-
-    public double getAverageGrade() {
-//        Optional.ofNullable(getStudentIndex())
-//                .map(StudentIndex::getIndexSubjectList)
-//                .orElse(null)
-//                .stream()
-//                .mapToDouble(IndexSubject::getGrade).sum();
-//
-        return getStudentIndex().getIndexSubjectList().stream().mapToDouble(IndexSubject::getGrade).sum()
-                / getStudentIndex().getIndexSubjectList().size();
-    }
 }

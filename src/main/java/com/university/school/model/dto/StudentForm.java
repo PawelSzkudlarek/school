@@ -1,19 +1,17 @@
 package com.university.school.model.dto;
 
-import javax.validation.constraints.*;
-
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.university.school.valiation.validator.UniqueLogin;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({"name", "lastName", "email", "login", "phoneNo", "personalNumber", "city", "street", "houseNo", "apartmentNo", "postCode"})
 public class StudentForm {
 
     //Personal Data
@@ -43,7 +41,7 @@ public class StudentForm {
     @NotNull
     private String city;
     private String street;
-    private String postCode;
     private String houseNo;
     private String apartmentNo;
+    private String postCode;
 }
