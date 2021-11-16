@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 import com.university.school.model.dto.StudentDetailsDto;
 import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.StudentRequest;
+import com.university.school.model.entity.Address;
 import com.university.school.model.entity.Student;
 import com.university.school.model.entity.User;
 import com.university.school.repository.StudentRepository;
@@ -18,6 +19,7 @@ import com.university.school.util.EntityMapper;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +116,7 @@ public class StudentService {
                 .lastName(student.getPerson().getLastName())
                 .personalNumber(student.getPerson().getPersonalNumber())
                 .phoneNo(student.getPerson().getPhoneNo())
-                .address(student.getPerson().getAddress())
+                .address((Address) Hibernate.unproxy(student.getPerson().getAddress()))
                 .build();
     }
 }
