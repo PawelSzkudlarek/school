@@ -1,6 +1,7 @@
 package com.university.school.repository;
 
 import com.university.school.model.entity.Student;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Student findActiveStudentById(long id);
 
     @Query("Select s FROM Student s WHERE s.person.active = true")
-    List<Student> findAllActiveStudents();
+    List<Student> findAllActiveStudents(PageRequest pageRequest);
 
     @Modifying
     @Transactional

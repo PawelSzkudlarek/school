@@ -10,9 +10,18 @@ import com.university.school.model.entity.User;
 import com.university.school.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -54,18 +63,25 @@ public class StudentController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Student>> findAllStudent() {
-        log.info("Get all students..");
-        return ResponseEntity.ok(studentService.findAllStudent());
+    public ResponseEntity<List<Student>> findAllStudent(
+            @RequestParam Integer page, @RequestParam Integer size, @RequestParam(required = false) String sortby) {
+        log.info("Get all students.. by request");
+        return ResponseEntity.ok(studentService.findAllStudent(page, size, sortby));
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<Page<Student>> findAllStudent(@RequestBody Pageable pageable) {
+        log.info("Get all students.. by page");
+        return ResponseEntity.ok(studentService.findAllStudent(pageable));
     }
 
     @GetMapping("/request")
-    public ResponseEntity<List<Student>> findStudents(@RequestBody StudentRequest request){
+    public ResponseEntity<List<Student>> findStudents(@RequestBody StudentRequest request) {
         return studentService.findStudents(request);
     }
 
     @GetMapping("/details")
-    public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam long id){
+    public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam long id) {
         log.info("Get student detils by id:" + id);
         return ResponseEntity.of(studentService.getStudentDetails(id));
     }

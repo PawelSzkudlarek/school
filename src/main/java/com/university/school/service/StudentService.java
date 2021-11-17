@@ -14,12 +14,16 @@ import com.university.school.model.entity.Address;
 import com.university.school.model.entity.Student;
 import com.university.school.model.entity.User;
 import com.university.school.repository.StudentRepository;
-import com.university.school.repository.UserRepository;
 import com.university.school.util.EntityMapper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,15 +36,21 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final UserRepository userRepository;
     private final EntityManager entityManager;
 
     public Optional<Student> findStudent(long id) {
         return studentRepository.findById(id);
     }
 
-    public List<Student> findAllStudent() {
-        return studentRepository.findAllActiveStudents();
+    public Page<Student> findAllStudent(Pageable pageable) {
+        return studentRepository.findAll(pageable);
+    }
+
+    public List<Student> findAllStudent(Integer page, Integer size, String sortBy) {
+        final PageRequest pageRequest = StringUtils.isEmpty(sortBy)
+                ? PageRequest.of(page, size)
+                : PageRequest.of(page, size, Sort.by(sortBy).ascending());
+        return studentRepository.findAllActiveStudents(pageRequest);
     }
 
     public Student findActiveStudent(long id) {
