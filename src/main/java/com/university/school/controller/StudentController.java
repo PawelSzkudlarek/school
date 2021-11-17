@@ -62,15 +62,15 @@ public class StudentController {
         return ResponseEntity.of(studentService.findStudent(id));
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Student>> findAllStudent(
-            @RequestParam Integer page, @RequestParam Integer size, @RequestParam(required = false) String sortby) {
-        log.info("Get all students.. by request");
-        return ResponseEntity.ok(studentService.findAllStudent(page, size, sortby));
-    }
+//    @GetMapping("/findAll")
+//    public ResponseEntity<List<Student>> findAllStudent(
+//            @RequestParam Integer page, @RequestParam Integer size, @RequestParam(required = false) String sortby) {
+//        log.info("Get all students.. by request");
+//        return ResponseEntity.ok(studentService.findAllStudent(page, size, sortby));
+//    }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Page<Student>> findAllStudent(@RequestBody Pageable pageable) {
+    public ResponseEntity<Page<Student>> findAllStudent(Pageable pageable) {
         log.info("Get all students.. by page");
         return ResponseEntity.ok(studentService.findAllStudent(pageable));
     }
