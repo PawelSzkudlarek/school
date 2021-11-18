@@ -26,7 +26,7 @@ public class EmployeeService {
     }
 
     public void saveTeacher(EmployeeForm employeeForm) {
-        employeeRepository.save(EntityMapper.mapFormToTeacherEntity(employeeForm));
+        employeeRepository.save(EntityMapper.mapFormToEntity(employeeForm));
     }
 
     public void deleteTeacher(long id) {

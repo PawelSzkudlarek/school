@@ -1,8 +1,12 @@
 package com.university.school.util;
 
-import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.EmployeeForm;
-import com.university.school.model.entity.*;
+import com.university.school.model.dto.StudentForm;
+import com.university.school.model.entity.Address;
+import com.university.school.model.entity.Employee;
+import com.university.school.model.entity.Person;
+import com.university.school.model.entity.Student;
+import com.university.school.model.entity.User;
 import com.university.school.model.enums.PersonType;
 import com.university.school.model.enums.WorkArea;
 import lombok.AccessLevel;
@@ -11,12 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EntityMapper {
 
-
-    public static Employee mapFormToTeacherEntity(EmployeeForm form){
+    public static Employee mapFormToEntity(EmployeeForm form) {
         return mapFormToEntity(form, WorkArea.TEACHER);
     }
 
-    private static Employee mapFormToEntity(EmployeeForm form, WorkArea workArea){
+    private static Employee mapFormToEntity(EmployeeForm form, WorkArea workArea) {
         return Employee.builder()
                 .person(Person.builder()
                         .name(form.getName())
@@ -38,7 +41,7 @@ public class EntityMapper {
                 .build();
     }
 
-    public static Student mapFormToEntity(StudentForm form){
+    public static Student mapFormToEntity(StudentForm form) {
         return Student.builder()
                 .person(Person.builder()
                         .name(form.getName())
