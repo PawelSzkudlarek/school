@@ -1,11 +1,14 @@
 package com.university.school.model.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +16,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name = "users")
 public class User implements UserDetails {
@@ -31,8 +34,9 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
-    private List<? extends GrantedAuthority> authorities = new ArrayList<>();
-    private boolean accountNonExpired;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserAuthority> authorities;
+    private boolean accountNonExpired = true;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
