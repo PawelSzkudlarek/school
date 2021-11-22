@@ -1,0 +1,53 @@
+package com.university.school.service;
+
+import javax.annotation.PostConstruct;
+
+import com.university.school.model.entity.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.university.school.security.UserRole.ADMIN;
+import static com.university.school.security.UserRole.STUDENT;
+
+@Service("Fake")
+public class FakeUserDaoService implements UserDao{
+
+    List<User> users = new ArrayList<>();
+    private PasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    private void createUsers(){
+        users.add(User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin"))
+                .email("admin@admin.com")
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .authorities(ADMIN.getGrantedAuthorities())
+                .build());
+
+        users.add(User.builder()
+                .username("pablo")
+                .password(passwordEncoder.encode("123"))
+                .email("pablo@wp.com")
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .authorities(STUDENT.getGrantedAuthorities())
+                .build());
+    }
+
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return users.stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst();
+    }
+}
