@@ -1,12 +1,12 @@
 package com.university.school.service;
 
-import javax.annotation.PostConstruct;
-
+import com.university.school.annotations.Secured;
 import com.university.school.model.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +14,16 @@ import java.util.Optional;
 import static com.university.school.security.UserRole.ADMIN;
 import static com.university.school.security.UserRole.STUDENT;
 
+@Secured
 @Service("Fake")
 @AllArgsConstructor
-public class FakeUserDaoService implements UserDao{
+public class FakeUserDaoService implements UserDao {
 
     List<User> users;
     private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
-    private void createUsers(){
+    private void createUsers() {
         users = new ArrayList<>();
         users.add(User.builder()
                 .username("admin")

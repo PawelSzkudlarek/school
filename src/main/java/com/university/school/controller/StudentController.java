@@ -71,7 +71,6 @@ public class StudentController {
 //    }
 
     @GetMapping("/findAll")
-    @PreAuthorize("ROLE_ADMIN")
     public ResponseEntity<Page<Student>> findAllStudent(Pageable pageable) {
         log.info("Get all students.. by page");
         return ResponseEntity.ok(studentService.findAllStudent(pageable));
