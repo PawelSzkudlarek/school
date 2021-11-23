@@ -1,12 +1,13 @@
 package com.university.school.service;
 
+import javax.annotation.PostConstruct;
+
 import com.university.school.annotations.Secured;
 import com.university.school.model.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ import static com.university.school.security.UserRole.STUDENT;
 @AllArgsConstructor
 public class FakeUserDaoService implements UserDao {
 
-    List<User> users;
+    private List<User> users;
     private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
@@ -29,22 +30,24 @@ public class FakeUserDaoService implements UserDao {
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .email("admin@admin.com")
+                .permissions(ADMIN.getGrantedAuthorities())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .authorities(ADMIN.getGrantedAuthorities())
+                .permissions(ADMIN.getGrantedAuthorities())
                 .build());
 
         users.add(User.builder()
                 .username("pablo")
                 .password(passwordEncoder.encode("123"))
                 .email("pablo@wp.com")
+                .permissions(STUDENT.getGrantedAuthorities())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .authorities(STUDENT.getGrantedAuthorities())
+                .permissions(STUDENT.getGrantedAuthorities())
                 .build());
     }
 

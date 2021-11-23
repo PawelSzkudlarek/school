@@ -1,21 +1,31 @@
 package com.university.school.security;
 
-import com.university.school.model.entity.UserAuthority;
-
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.university.school.security.UserPermission.EMPLOYEE_READ;
+import static com.university.school.security.UserPermission.EMPLOYEE_WRITE;
+import static com.university.school.security.UserPermission.STUDENT_READ;
+import static com.university.school.security.UserPermission.STUDENT_WRITE;
 
 public enum UserRole {
-    STUDENT(List.of(new UserAuthority("ROLE_STUDENT"))),
-    EMPLOYEE(List.of(new UserAuthority("ROLE_EMPLOYEE"))),
-    ADMIN(List.of(new UserAuthority("ROLE_ADMIN")));
 
-    private final List<UserAuthority> authorities;
+    STUDENT("ROLE_STUDENT", List.of()),
+    EMPLOYEE("ROLE_EMPLOYEE", List.of(STUDENT_READ, STUDENT_WRITE)),
+    ADMIN("ROLE_ADMIN", List.of(STUDENT_READ, STUDENT_WRITE, EMPLOYEE_READ, EMPLOYEE_WRITE));
 
-    UserRole(List<UserAuthority> authorities) {
-        this.authorities = authorities;
+    private final String role;
+    private final List<UserPermission> permissions;
+
+    UserRole(String role, List<UserPermission> permissions) {
+        this.role = role;
+        this.permissions = permissions;
     }
 
-    public List<UserAuthority> getGrantedAuthorities() {
-        return this.authorities;
+    public List<String> getGrantedAuthorities() {
+        final List<String> permissionList =
+                permissions.stream().map(UserPermission::getValue).collect(Collectors.toList());
+        permissionList.add(role);
+        return permissionList;
     }
 }

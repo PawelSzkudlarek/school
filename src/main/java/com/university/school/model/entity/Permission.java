@@ -15,21 +15,20 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserAuthority implements GrantedAuthority {
+public class Permission implements GrantedAuthority {
 
-    // Change that to persmission
-    public UserAuthority(String authority) {
-        this.authority = authority;
+    public Permission(String permission) {
+        this.permission = permission;
     }
 
     @Id
     @GeneratedValue
     private long id;
 
-    private String authority;
+    private String permission;
 
     @Override
     public String getAuthority() {
-        return this.authority;
+        return this.permission;
     }
 }

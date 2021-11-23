@@ -1,11 +1,13 @@
 package com.university.school.model.entity;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -14,10 +16,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -34,8 +38,10 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserAuthority> authorities;
+    @ElementCollection
+    @CollectionTable(name = "Permissions", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "permission")
+    private List<String> permissions;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -47,9 +53,8 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+    public Collection<GrantedAuthority> getAuthorities() {
+        return this.permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
