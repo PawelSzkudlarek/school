@@ -1,5 +1,6 @@
 package com.university.school.security;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +21,14 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
-public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private static final SecretKey secret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    static SecretKey getSecret() {
+        return secret;
+    }
 
     @SneakyThrows
     @Override
@@ -47,7 +53,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
-                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256))
+                .signWith(secret)
                 .compact();
         response.setHeader("Authorization", "Bearer " + token);
     }
