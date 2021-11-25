@@ -1,12 +1,14 @@
-package com.university.school.security;
+package com.university.school.security.model;
+
+import com.university.school.security.model.UserPermission;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.university.school.security.UserPermission.EMPLOYEE_READ;
-import static com.university.school.security.UserPermission.EMPLOYEE_WRITE;
-import static com.university.school.security.UserPermission.STUDENT_READ;
-import static com.university.school.security.UserPermission.STUDENT_WRITE;
+import static com.university.school.security.model.UserPermission.EMPLOYEE_READ;
+import static com.university.school.security.model.UserPermission.EMPLOYEE_WRITE;
+import static com.university.school.security.model.UserPermission.STUDENT_READ;
+import static com.university.school.security.model.UserPermission.STUDENT_WRITE;
 
 public enum UserRole {
 

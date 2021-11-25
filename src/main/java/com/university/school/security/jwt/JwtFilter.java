@@ -1,4 +1,4 @@
-package com.university.school.security;
+package com.university.school.security.jwt;
 
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.university.school.security.model.UsernameAndPasswordAuthenticationRequest;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

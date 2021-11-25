@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.university.school.security.UserRole.ADMIN;
-import static com.university.school.security.UserRole.STUDENT;
+import static com.university.school.security.model.UserRole.ADMIN;
+import static com.university.school.security.model.UserRole.STUDENT;
 
 @Secured
 @Service("Fake")

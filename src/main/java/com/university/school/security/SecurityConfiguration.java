@@ -4,6 +4,9 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 
 import com.university.school.annotations.Secured;
+import com.university.school.security.jwt.JwtConfig;
+import com.university.school.security.jwt.JwtFilter;
+import com.university.school.security.jwt.JwtVerifier;
 import com.university.school.service.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

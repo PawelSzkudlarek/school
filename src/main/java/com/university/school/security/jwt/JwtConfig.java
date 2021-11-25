@@ -1,4 +1,4 @@
-package com.university.school.security;
+package com.university.school.security.jwt;
 
 import com.university.school.annotations.Secured;
 import lombok.Getter;

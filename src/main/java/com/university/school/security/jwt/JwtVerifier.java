@@ -1,4 +1,4 @@
-package com.university.school.security;
+package com.university.school.security.jwt;
 
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.university.school.security.jwt.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -22,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.university.school.security.JwtFilter.AUTHORITIES;
-import static com.university.school.security.JwtFilter.AUTHORITY;
+import static com.university.school.security.jwt.JwtFilter.AUTHORITIES;
+import static com.university.school.security.jwt.JwtFilter.AUTHORITY;
 
 @AllArgsConstructor
 public class JwtVerifier extends OncePerRequestFilter {

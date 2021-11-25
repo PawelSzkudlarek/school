@@ -35,12 +35,4 @@ public class LoginService {
         }
         return proposals;
     }
-
-//    @PostConstruct
-//    public void addSomeLogins(){
-//        loginRepository.save(Login.of("Pablo"));
-//        loginRepository.save(Login.of("Pablo1"));
-//        loginRepository.save(Login.of("Pablo2"));
-//        loginRepository.save(Login.of("Pablo3"));
-//    }
 }
