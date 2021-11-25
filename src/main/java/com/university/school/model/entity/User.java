@@ -1,15 +1,14 @@
 package com.university.school.model.entity;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import com.university.school.security.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -38,10 +36,8 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
-    @ElementCollection
-    @CollectionTable(name = "Permissions", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "permission")
-    private List<String> permissions;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -54,7 +50,9 @@ public class User implements UserDetails {
     }
 
     public Collection<GrantedAuthority> getAuthorities() {
-        return this.permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return userRole.getGrantedAuthorities().stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override

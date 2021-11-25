@@ -9,8 +9,12 @@ import com.university.school.model.entity.Student;
 import com.university.school.model.entity.User;
 import com.university.school.model.enums.PersonType;
 import com.university.school.model.enums.WorkArea;
+import com.university.school.security.UserRole;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import static com.university.school.security.UserRole.EMPLOYEE;
+import static com.university.school.security.UserRole.STUDENT;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EntityMapper {
@@ -26,7 +30,11 @@ public class EntityMapper {
                         .lastName(form.getLastName())
                         .personalNumber(form.getPersonalNumber())
                         .phoneNo(form.getPhoneNo())
-//                        .user(new User(form.getLogin(), form.getPassword(), form.getEmail()))
+                        .user(User.builder()
+                                .username(form.getLogin())
+                                .password(form.getPassword())
+                                .userRole(EMPLOYEE)
+                                .build())
                         .email(form.getEmail())
                         .address(Address.builder()
                                 .city(form.getCity())
@@ -48,7 +56,11 @@ public class EntityMapper {
                         .lastName(form.getLastName())
                         .personalNumber(form.getPersonalNumber())
                         .phoneNo(form.getPhoneNo())
-//                        .user(new User(form.getLogin(), form.getPassword(), form.getEmail()))
+                        .user(User.builder()
+                                .username(form.getLogin())
+                                .password(form.getPassword())
+                                .userRole(STUDENT)
+                                .build())
                         .email(form.getEmail())
                         .personType(PersonType.STUDENT)
                         .address(Address.builder()

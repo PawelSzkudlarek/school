@@ -29,25 +29,23 @@ public class FakeUserDaoService implements UserDao {
         users.add(User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
+                .userRole(ADMIN)
                 .email("admin@admin.com")
-                .permissions(ADMIN.getGrantedAuthorities())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .permissions(ADMIN.getGrantedAuthorities())
                 .build());
 
         users.add(User.builder()
                 .username("pablo")
                 .password(passwordEncoder.encode("123"))
                 .email("pablo@wp.com")
-                .permissions(STUDENT.getGrantedAuthorities())
+                .userRole(STUDENT)
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .permissions(STUDENT.getGrantedAuthorities())
                 .build());
     }
 

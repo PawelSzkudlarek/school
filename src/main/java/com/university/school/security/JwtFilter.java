@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,12 +21,11 @@ import java.util.Date;
 @AllArgsConstructor
 public class JwtFilter extends UsernamePasswordAuthenticationFilter {
 
+    public static final String AUTHORITIES = "authorities";
+    public static final String AUTHORITY = "authority";
     private final AuthenticationManager authenticationManager;
-    private static final SecretKey secret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-    static SecretKey getSecret() {
-        return secret;
-    }
+    private final SecretKey secret;
+    private final JwtConfig jwtConfig;
 
     @SneakyThrows
     @Override
@@ -50,11 +47,12 @@ public class JwtFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication authResult) {
         final String token = Jwts.builder()
                 .setSubject(authResult.getName())
-                .claim("authorities", authResult.getAuthorities())
+                .claim(AUTHORITIES, authResult.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays())))
                 .signWith(secret)
                 .compact();
-        response.setHeader("Authorization", "Bearer " + token);
+
+        response.setHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
     }
 }

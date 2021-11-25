@@ -81,9 +81,10 @@ public class StudentController {
         return studentService.findStudents(request);
     }
 
+    @PreAuthorize("hasAuthority('student:read')")
     @GetMapping("/details")
     public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam long id) {
-        log.info("Get student detils by id:" + id);
+        log.info("Get student details by id:" + id);
         return ResponseEntity.of(studentService.getStudentDetails(id));
     }
 }
