@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.university.school.security.jwt.JwtConfig;
+import com.university.school.security.model.CustomPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -35,7 +35,8 @@ public class JwtVerifier extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    FilterChain filterChain
+    ) throws ServletException, IOException {
 
         final String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         if (authorizationHeader.isBlank() || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
@@ -49,7 +50,6 @@ public class JwtVerifier extends OncePerRequestFilter {
                     .build()
                     .parseClaimsJws(token);
 
-            final String username = claimsJws.getBody().getSubject();
             final var authorities = (List<Map<String, String>>) claimsJws.getBody().get(AUTHORITIES);
 
             final List<SimpleGrantedAuthority> simpleGrantedAuthorities =
@@ -58,7 +58,11 @@ public class JwtVerifier extends OncePerRequestFilter {
                             .collect(Collectors.toList());
 
             Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, simpleGrantedAuthorities);
+                    new UsernamePasswordAuthenticationToken(CustomPrincipal.builder()
+                            .personId(claimsJws.getHeader().get(jwtConfig.getPersonIdHeader()).toString())
+                            .username(claimsJws.getBody().getSubject())
+                            .build(),
+                            null, simpleGrantedAuthorities);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException ex) {

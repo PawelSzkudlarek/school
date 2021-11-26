@@ -1,8 +1,8 @@
-package com.university.school.controller;
+package com.university.school.controller.nonsecured;
 
 import javax.validation.Valid;
 
-import com.university.school.annotations.Secured;
+import com.university.school.annotations.NonSecured;
 import com.university.school.model.dto.StudentDetailsDto;
 import com.university.school.model.dto.StudentForm;
 import com.university.school.model.dto.StudentRequest;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,12 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Secured
+@NonSecured
 @Log4j2
 @RestController
 @RequestMapping("/school/student")
 @RequiredArgsConstructor
-public class StudentController {
+public class StudentControllerNonSecured {
+
 
     private final StudentService studentService;
 
@@ -65,13 +65,6 @@ public class StudentController {
         return ResponseEntity.of(studentService.findStudent(id));
     }
 
-//    @GetMapping("/findAll")
-//    public ResponseEntity<List<Student>> findAllStudent(
-//            @RequestParam Integer page, @RequestParam Integer size, @RequestParam(required = false) String sortby) {
-//        log.info("Get all students.. by request");
-//        return ResponseEntity.ok(studentService.findAllStudent(page, size, sortby));
-//    }
-
     @GetMapping("/findAll")
     public ResponseEntity<Page<Student>> findAllStudent(Pageable pageable) {
         log.info("Get all students.. by page");
@@ -83,10 +76,9 @@ public class StudentController {
         return studentService.findStudents(request);
     }
 
-    @PreAuthorize("hasAuthority('student:read') or principal.personId == #id")
     @GetMapping("/details")
-    public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam String id) {
+    public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam long id) {
         log.info("Get student details by id:" + id);
-        return ResponseEntity.of(studentService.getStudentDetails(Long.parseLong(id)));
+        return ResponseEntity.of(studentService.getStudentDetails(id));
     }
 }

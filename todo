@@ -5,6 +5,7 @@ Current:
 - create standard response from error handler, build mapper per Exception type
 - change hints for login from random values to generated base on form
 - fix loading data from script
+- @PreAuthorize("hasRole('ROLE_ADMIN) or #authUser.id == #userId")
 
 Future Features:
 - CriteriaAPI by Request

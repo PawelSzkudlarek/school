@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.university.school.security.model.UserRole;
@@ -38,6 +39,8 @@ public class User implements UserDetails {
     private String email;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+    @OneToOne
+    private Person person;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;

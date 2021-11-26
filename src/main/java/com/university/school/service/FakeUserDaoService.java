@@ -3,6 +3,7 @@ package com.university.school.service;
 import javax.annotation.PostConstruct;
 
 import com.university.school.annotations.Secured;
+import com.university.school.model.entity.Person;
 import com.university.school.model.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,14 +24,30 @@ public class FakeUserDaoService implements UserDao {
     private List<User> users;
     private final PasswordEncoder passwordEncoder;
 
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return users.stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst();
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return users.stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst();
+    }
+
     @PostConstruct
     private void createUsers() {
         users = new ArrayList<>();
         users.add(User.builder()
+                .id(1L)
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .userRole(ADMIN)
                 .email("admin@admin.com")
+                .person(Person.builder().id(1).build())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
@@ -38,6 +55,8 @@ public class FakeUserDaoService implements UserDao {
                 .build());
 
         users.add(User.builder()
+                .id(2L)
+                .person(Person.builder().id(2).build())
                 .username("pablo")
                 .password(passwordEncoder.encode("123"))
                 .email("pablo@wp.com")
@@ -47,12 +66,5 @@ public class FakeUserDaoService implements UserDao {
                 .credentialsNonExpired(true)
                 .enabled(true)
                 .build());
-    }
-
-    @Override
-    public Optional<User> findUserByUsername(String username) {
-        return users.stream()
-                .filter(user -> user.getUsername().equals(username))
-                .findFirst();
     }
 }
