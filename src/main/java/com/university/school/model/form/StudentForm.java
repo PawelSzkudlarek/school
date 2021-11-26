@@ -1,7 +1,8 @@
-package com.university.school.model.dto;
+package com.university.school.model.form;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.university.school.valiation.validator.UniqueLogin;
+import com.university.school.valiation.annotation.UniqueEmail;
+import com.university.school.valiation.annotation.UniqueUsername;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -19,14 +20,16 @@ public class StudentForm {
     private String name;
     @NotNull
     private String lastName;
-    @NotEmpty
+
     @Email
+    @NotEmpty
+    @UniqueEmail
     private String email;
 
     //User
     @NotEmpty
-    @UniqueLogin(hints = {"personalNumber"})
-    private String login;
+    @UniqueUsername(hints = {"personalNumber"})
+    private String username;
     private String password;
 
     @Pattern(regexp = "^([0-9]{9})$")

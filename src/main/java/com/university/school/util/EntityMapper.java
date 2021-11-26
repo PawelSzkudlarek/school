@@ -1,7 +1,9 @@
 package com.university.school.util;
 
-import com.university.school.model.dto.EmployeeForm;
-import com.university.school.model.dto.StudentForm;
+import com.university.school.model.form.EmployeeForm;
+import com.university.school.model.dto.StudentDto;
+import com.university.school.model.form.StudentForm;
+import com.university.school.model.dto.UserDto;
 import com.university.school.model.entity.Address;
 import com.university.school.model.entity.Employee;
 import com.university.school.model.entity.Person;
@@ -12,7 +14,6 @@ import com.university.school.model.enums.WorkArea;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import static com.university.school.security.model.UserRole.EMPLOYEE;
 import static com.university.school.security.model.UserRole.STUDENT;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -55,11 +56,12 @@ public class EntityMapper {
                         .lastName(form.getLastName())
                         .personalNumber(form.getPersonalNumber())
                         .phoneNo(form.getPhoneNo())
-//                        .user(User.builder()
-//                                .username(form.getLogin())
-//                                .password(form.getPassword())
-//                                .userRole(STUDENT)
-//                                .build())
+                        .user(User.builder()
+                                .username(form.getUsername())
+                                .password(form.getPassword())
+                                .email(form.getEmail())
+                                .userRole(STUDENT)
+                                .build())
                         .email(form.getEmail())
                         .personType(PersonType.STUDENT)
                         .address(Address.builder()
@@ -71,6 +73,24 @@ public class EntityMapper {
                                 .build())
                         .build())
                 .semester(form.getSemester())
+                .build();
+    }
+
+    public static UserDto mapToDto(User user){
+        return UserDto.builder()
+                .username(user.getUsername())
+                .username(user.getEmail())
+                .build();
+    }
+
+    public static StudentDto mapToDto(Student student){
+        return StudentDto.builder()
+                .name(student.getPerson().getName())
+                .lastName(student.getPerson().getLastName())
+                .email(student.getPerson().getUser().getEmail())
+                .active(student.getPerson().isActive())
+                .semester(student.getSemester())
+                .fieldOfStudy(student.getFieldOfStudy())
                 .build();
     }
 }

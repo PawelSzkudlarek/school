@@ -8,15 +8,15 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.university.school.model.dto.StudentDetailsDto;
-import com.university.school.model.dto.StudentForm;
+import com.university.school.model.dto.StudentDto;
+import com.university.school.model.form.StudentForm;
 import com.university.school.model.dto.StudentRequest;
+import com.university.school.model.dto.UserDto;
 import com.university.school.model.entity.Address;
 import com.university.school.model.entity.Student;
-import com.university.school.model.entity.User;
 import com.university.school.repository.StudentRepository;
 import com.university.school.util.EntityMapper;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
@@ -53,15 +53,16 @@ public class StudentService {
         return studentRepository.findAllActiveStudents(pageRequest);
     }
 
-    public Student findActiveStudent(long id) {
-        return studentRepository.findActiveStudentById(id);
+    public StudentDto findActiveStudent(long id) {
+        return EntityMapper.mapToDto(studentRepository.findActiveStudentById(id));
     }
 
-    public User saveStudent(StudentForm studentForm) {
+    public UserDto saveStudent(StudentForm studentForm) {
         if (StringUtils.isAllEmpty(studentForm.getPassword())) {
             studentForm.setPassword(generatePassword());
         }
-        return studentRepository.save(EntityMapper.mapFormToEntity(studentForm)).getPerson().getUser();
+        final Student savedStudent = studentRepository.save(EntityMapper.mapFormToEntity(studentForm));
+        return EntityMapper.mapToDto(savedStudent.getPerson().getUser());
     }
 
     public Student saveStudent(Student student) {

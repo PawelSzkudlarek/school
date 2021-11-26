@@ -4,10 +4,11 @@ import javax.validation.Valid;
 
 import com.university.school.annotations.NonSecured;
 import com.university.school.model.dto.StudentDetailsDto;
-import com.university.school.model.dto.StudentForm;
+import com.university.school.model.dto.StudentDto;
+import com.university.school.model.form.StudentForm;
 import com.university.school.model.dto.StudentRequest;
+import com.university.school.model.dto.UserDto;
 import com.university.school.model.entity.Student;
-import com.university.school.model.entity.User;
 import com.university.school.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,16 +34,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentControllerNonSecured {
 
-
     private final StudentService studentService;
 
     @GetMapping(produces = {"application/json", "application/xml"})
-    public ResponseEntity<Student> findActiveStudent(@RequestParam long id) {
+    public ResponseEntity<StudentDto> findActiveStudent(@RequestParam long id) {
         return new ResponseEntity<>(studentService.findActiveStudent(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<User> addStudent(@Valid @RequestBody StudentForm studentForm) {
+    public ResponseEntity<UserDto> addStudent(@Valid @RequestBody StudentForm studentForm) {
         log.info(String.format("Receive new student form %s", studentForm));
         return new ResponseEntity<>(studentService.saveStudent(studentForm), HttpStatus.CREATED);
     }

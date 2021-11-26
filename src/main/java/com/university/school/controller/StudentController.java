@@ -4,10 +4,11 @@ import javax.validation.Valid;
 
 import com.university.school.annotations.Secured;
 import com.university.school.model.dto.StudentDetailsDto;
-import com.university.school.model.dto.StudentForm;
+import com.university.school.model.dto.StudentDto;
+import com.university.school.model.form.StudentForm;
 import com.university.school.model.dto.StudentRequest;
+import com.university.school.model.dto.UserDto;
 import com.university.school.model.entity.Student;
-import com.university.school.model.entity.User;
 import com.university.school.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,12 +38,14 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping(produces = {"application/json", "application/xml"})
-    public ResponseEntity<Student> findActiveStudent(@RequestParam long id) {
-        return new ResponseEntity<>(studentService.findActiveStudent(id), HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER', 'ROLE_EMPLOYEE') or principal.personId == #id")
+    public ResponseEntity<StudentDto> findActiveStudent(@RequestParam String id) {
+        return new ResponseEntity<>(studentService.findActiveStudent(Long.parseLong(id)), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<User> addStudent(@Valid @RequestBody StudentForm studentForm) {
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or principal.personId == #id")
+    public ResponseEntity<UserDto> addStudent(@Valid @RequestBody StudentForm studentForm) {
         log.info(String.format("Receive new student form %s", studentForm));
         return new ResponseEntity<>(studentService.saveStudent(studentForm), HttpStatus.CREATED);
     }
@@ -83,7 +86,7 @@ public class StudentController {
         return studentService.findStudents(request);
     }
 
-    @PreAuthorize("hasAuthority('student:read') or principal.personId == #id")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or principal.personId == #id")
     @GetMapping("/details")
     public ResponseEntity<StudentDetailsDto> getPersonalDetails(@RequestParam String id) {
         log.info("Get student details by id:" + id);

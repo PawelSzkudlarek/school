@@ -1,4 +1,4 @@
-package com.university.school.model.dto;
+package com.university.school.model.form;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.university.school.model.enums.WorkArea;
-import com.university.school.valiation.validator.UniqueLogin;
+import com.university.school.valiation.annotation.UniqueUsername;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class EmployeeForm {
 
     //User
     @NotEmpty
-    @UniqueLogin
+    @UniqueUsername
     private String login;
     private String password;
 

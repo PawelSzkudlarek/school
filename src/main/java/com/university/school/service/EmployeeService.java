@@ -1,6 +1,6 @@
 package com.university.school.service;
 
-import com.university.school.model.dto.EmployeeForm;
+import com.university.school.model.form.EmployeeForm;
 import com.university.school.model.entity.Employee;
 import com.university.school.repository.EmployeeRepository;
 import com.university.school.util.EntityMapper;
