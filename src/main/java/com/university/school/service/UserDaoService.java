@@ -17,4 +17,9 @@ public class UserDaoService implements UserDao {
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
     }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }
