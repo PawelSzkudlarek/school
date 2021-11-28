@@ -1,12 +1,15 @@
 package com.university.school.service;
 
-import com.university.school.model.form.EmployeeForm;
+import com.university.school.model.dto.EmployeeDetailsDto;
 import com.university.school.model.entity.Employee;
+import com.university.school.model.entity.Person;
+import com.university.school.model.entity.User;
+import com.university.school.model.form.EmployeeForm;
 import com.university.school.repository.EmployeeRepository;
+import com.university.school.security.model.UserRole;
 import com.university.school.util.EntityMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,16 +24,20 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public void save(Employee employee) {
-        employeeRepository.save(employee);
-    }
-
     public Optional<Employee> findEmployeeById(long id) {
         return Optional.ofNullable(employeeRepository.findActiveTeacher(id));
     }
 
-    public void saveEmployee(EmployeeForm employeeForm) {
-        employeeRepository.save(EntityMapper.mapFormToEntity(employeeForm));
+    public void saveEmployee(EmployeeForm form) {
+        final Employee employee = EntityMapper.mapFormToEntity(form);
+        if (form.isCreateUser()) {
+            employee.getPerson().setUser(User.builder()
+                    .username(form.getUsername())
+                    .password(form.getPassword())
+                    .userRole(UserRole.findProperRole(form.getWorkArea()))
+                    .build());
+        }
+        employeeRepository.save(employee);
     }
 
     public HttpStatus deleteEmployee(long id) {
@@ -43,11 +50,40 @@ public class EmployeeService {
         }).orElse(HttpStatus.NOT_FOUND);
     }
 
-    public void updateEmployee() {
-        throw new NotImplementedException();
+    public void updateEmployee(EmployeeDetailsDto dto) {
+        employeeRepository
+                .findById(dto.getId())
+                .ifPresentOrElse(employee -> {
+                    final Person person = employee.getPerson();
+                    person.setName(dto.getName());
+                    person.setLastName(dto.getLastName());
+                    employeeRepository.save(employee);
+                }, () -> new RuntimeException("Employee not exists."));
     }
 
     public Page<Employee> findAllEmployee(Pageable pageable) {
         return employeeRepository.findAllActiveEmployees(pageable);
+    }
+
+    public Optional<EmployeeDetailsDto> getEmployeeDetails(long id) {
+        return employeeRepository.findById(id)
+                .map(this::mapEmployeeToDto)
+                .or(Optional::empty);
+    }
+
+    private EmployeeDetailsDto mapEmployeeToDto(Employee employee) {
+        return EmployeeDetailsDto.builder()
+                .id(employee.getId())
+                .name(employee.getPerson().getName())
+                .lastName(employee.getPerson().getLastName())
+                .personalNumber(employee.getPerson().getPersonalNumber())
+                .phoneNo(employee.getPerson().getPhoneNo())
+                .city(employee.getPerson().getAddress().getCity())
+                .street(employee.getPerson().getAddress().getStreet())
+                .houseNo(employee.getPerson().getAddress().getHouseNo())
+                .apartmentNo(employee.getPerson().getAddress().getApartmentNo())
+                .postCode(employee.getPerson().getAddress().getPostCode())
+                .workArea(employee.getWorkArea())
+                .build();
     }
 }

@@ -30,7 +30,7 @@ public class DataDbInitConfig {
     private final StudentRepository studentRepository;
     private final EmployeeRepository employeeRepository;
 
-    @PostConstruct
+//    @PostConstruct
     void initDbData() throws IOException {
         final Resource resource = new ClassPathResource("MOCK_DATA.csv");
         CsvMapper mapper = new CsvMapper();

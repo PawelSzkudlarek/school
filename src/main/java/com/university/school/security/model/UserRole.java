@@ -1,12 +1,11 @@
 package com.university.school.security.model;
 
+import com.university.school.model.enums.WorkArea;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.university.school.security.model.UserPermission.EMPLOYEE_READ;
-import static com.university.school.security.model.UserPermission.EMPLOYEE_WRITE;
-import static com.university.school.security.model.UserPermission.STUDENT_READ;
-import static com.university.school.security.model.UserPermission.STUDENT_WRITE;
+import static com.university.school.security.model.UserPermission.*;
 
 public enum UserRole {
 
@@ -29,4 +28,15 @@ public enum UserRole {
         permissionList.add(role);
         return permissionList;
     }
+
+    public static UserRole findProperRole(WorkArea workArea) {
+        switch (workArea) {
+            case TEACHER:
+                return UserRole.TEACHER;
+            default:
+                throw new RuntimeException("");
+        }
+    }
+
+
 }

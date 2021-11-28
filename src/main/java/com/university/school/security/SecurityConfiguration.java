@@ -1,8 +1,5 @@
 package com.university.school.security;
 
-import javax.annotation.PostConstruct;
-import javax.crypto.SecretKey;
-
 import com.university.school.annotations.Secured;
 import com.university.school.security.jwt.JwtConfig;
 import com.university.school.security.jwt.JwtFilter;
@@ -23,6 +20,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
 
 @Slf4j
 @Secured
@@ -45,12 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtFilter(authenticationManager(), getSecret(), jwtConfig))
                 .addFilterAfter(new JwtVerifier(getSecret(), jwtConfig), JwtFilter.class)
                 .authorizeRequests()
-                 .anyRequest()
+                .anyRequest()
                 .authenticated();
     }
 
     @Bean
-    public SecretKey getSecret(){
+    public SecretKey getSecret() {
         return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
@@ -69,9 +69,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
     }
 
-    //check do I need that bean
-//    @Secured
-//    @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);

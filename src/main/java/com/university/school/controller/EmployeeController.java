@@ -1,5 +1,7 @@
 package com.university.school.controller;
 
+import com.university.school.model.dto.EmployeeDetailsDto;
+import com.university.school.model.dto.StudentDetailsDto;
 import com.university.school.model.form.EmployeeForm;
 import com.university.school.model.entity.Employee;
 import com.university.school.service.EmployeeService;
@@ -8,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,8 +35,8 @@ public class EmployeeController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateEmployee(@RequestBody Employee employee) {
-        employeeService.updateEmployee();
+    public ResponseEntity<Void> updateEmployee(@RequestBody EmployeeDetailsDto employeeDetailsDto) {
+        employeeService.updateEmployee(employeeDetailsDto);
         return ResponseEntity.accepted().build();
     }
 
@@ -48,5 +51,12 @@ public class EmployeeController {
         final Page<Employee> allEmployee = employeeService.findAllEmployee(pageable);
         System.out.println("total elements: " + allEmployee.getTotalElements());
         return ResponseEntity.ok(allEmployee);
+    }
+
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN') or principal.personId == #id")
+    @GetMapping("/details")
+    public ResponseEntity<EmployeeDetailsDto> getPersonalDetails(@RequestParam String id) {
+        log.info("Get student details by id:" + id);
+        return ResponseEntity.of(employeeService.getEmployeeDetails(Long.parseLong(id)));
     }
 }
