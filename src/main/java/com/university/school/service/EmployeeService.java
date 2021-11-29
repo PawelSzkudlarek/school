@@ -2,7 +2,6 @@ package com.university.school.service;
 
 import com.university.school.model.dto.EmployeeDetailsDto;
 import com.university.school.model.entity.Employee;
-import com.university.school.model.entity.Person;
 import com.university.school.model.entity.User;
 import com.university.school.model.form.EmployeeForm;
 import com.university.school.repository.EmployeeRepository;
@@ -54,9 +53,16 @@ public class EmployeeService {
         employeeRepository
                 .findById(dto.getId())
                 .ifPresentOrElse(employee -> {
-                    final Person person = employee.getPerson();
-                    person.setName(dto.getName());
-                    person.setLastName(dto.getLastName());
+                    employee.getPerson().setName(dto.getName());
+                    employee.getPerson().setLastName(dto.getLastName());
+                    employee.getPerson().setPersonalNumber(dto.getPersonalNumber());
+                    employee.getPerson().setPhoneNo(dto.getPhoneNo());
+                    employee.getPerson().getAddress().setCity(dto.getCity());
+                    employee.getPerson().getAddress().setStreet(dto.getStreet());
+                    employee.getPerson().getAddress().setHouseNo(dto.getHouseNo());
+                    employee.getPerson().getAddress().setApartmentNo(dto.getApartmentNo());
+                    employee.getPerson().getAddress().setPostCode(dto.getPostCode());
+                    employee.setWorkArea(dto.getWorkArea());
                     employeeRepository.save(employee);
                 }, () -> new RuntimeException("Employee not exists."));
     }

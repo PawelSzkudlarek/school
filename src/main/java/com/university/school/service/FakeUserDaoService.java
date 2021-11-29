@@ -27,14 +27,14 @@ public class FakeUserDaoService implements UserDao {
     @Override
     public Optional<User> findUserByUsername(String username) {
         return users.stream()
-                .filter(user -> user.getUsername().equals(username))
+                .filter(user -> user.getUsername().equalsIgnoreCase(username))
                 .findFirst();
     }
 
     @Override
     public Optional<User> findUserByEmail(String email) {
         return users.stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
 
