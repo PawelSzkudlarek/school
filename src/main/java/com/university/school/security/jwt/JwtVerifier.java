@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,8 +39,10 @@ public class JwtVerifier extends OncePerRequestFilter {
                                     FilterChain filterChain
     ) throws ServletException, IOException {
 
+        List<String> list = Collections.list(request.getHeaderNames());
         final String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         if (authorizationHeader.isBlank() || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
+            // maybe throw some exception
             filterChain.doFilter(request, response);
             return;
         }

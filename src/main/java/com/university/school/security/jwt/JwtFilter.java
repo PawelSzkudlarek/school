@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class JwtFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
+    @SneakyThrows
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
@@ -62,6 +64,10 @@ public class JwtFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(secret)
                 .compact();
 
+        final String userRole = Optional.of((User) authResult.getPrincipal())
+                .map(User::getUserRole).map(String::valueOf).orElse("admin");
+
+        response.setHeader("userRole", userRole);
         response.setHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
     }
 }
