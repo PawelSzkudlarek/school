@@ -44,7 +44,7 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private List<UniversityGroup> universityGroups;
 
-    private String fieldOfStudy;
+    private String specialization;
     private Date educationStart;
     private int semester;
 }

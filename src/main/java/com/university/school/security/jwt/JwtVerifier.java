@@ -39,7 +39,6 @@ public class JwtVerifier extends OncePerRequestFilter {
                                     FilterChain filterChain
     ) throws ServletException, IOException {
 
-        List<String> list = Collections.list(request.getHeaderNames());
         final String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         if (authorizationHeader.isBlank() || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
             // maybe throw some exception

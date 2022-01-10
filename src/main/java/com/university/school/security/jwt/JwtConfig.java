@@ -17,5 +17,6 @@ public class JwtConfig {
     private String invalidTokenMsg;
     private Integer tokenExpirationAfterDays;
     private String personIdHeader;
+    private String secret;
 
 }

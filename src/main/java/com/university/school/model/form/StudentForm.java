@@ -1,11 +1,14 @@
 package com.university.school.model.form;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.university.school.model.enums.WorkArea;
 import com.university.school.valiation.annotation.UniqueEmail;
 import com.university.school.valiation.annotation.UniqueUsername;
 import lombok.*;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -21,25 +24,19 @@ public class StudentForm {
     @NotNull
     private String lastName;
 
-    @Email
-    @NotEmpty
-    @UniqueEmail
-    private String email;
-
-    //User
-    @NotEmpty
-    @UniqueUsername(hints = {"personalNumber"})
-    private String username;
-    private String password;
-
+//    @Digits(fraction = 0, integer = 11)
+    private String personalNumber;
     @Pattern(regexp = "^([0-9]{9})$")
     private String phoneNo;
 
-    @NotEmpty
-    @Digits(fraction = 0, integer = 11)
-    private String personalNumber;
+    //User
+    @UniqueUsername
+    private String username;
+    @Email
+    @UniqueEmail
+    private String email;
+    private String password;
 
-    private int semester;
     //Address
     @NotNull
     private String city;
@@ -47,4 +44,10 @@ public class StudentForm {
     private String houseNo;
     private String apartmentNo;
     private String postCode;
+
+    private String specialization;
+    private int semester;
+
+    private boolean createUser;
+
 }

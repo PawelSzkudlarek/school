@@ -44,12 +44,14 @@ public class StudentController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Student> updateStudent(@Valid @RequestBody Student student) {
         log.info(String.format("Receive student for update %s", student));
         return new ResponseEntity<>(studentService.saveStudent(student), HttpStatus.OK);
     }
 
     @DeleteMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteStudent(@RequestParam long id) {
         log.info(String.format("Receive request for delete student with id: %s", id));
         studentService.deleteStudent(id);

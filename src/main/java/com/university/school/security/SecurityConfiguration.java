@@ -68,9 +68,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
+//    @Bean
+//    public SecretKey getSecret() {
+//        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+//    }
+
     @Bean
     public SecretKey getSecret() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        return Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes());
     }
 
     @PostConstruct

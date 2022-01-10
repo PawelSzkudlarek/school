@@ -85,7 +85,7 @@ public class EntityMapper {
                 .email(student.getPerson().getUser().getEmail())
                 .active(student.getPerson().isActive())
                 .semester(student.getSemester())
-                .fieldOfStudy(student.getFieldOfStudy())
+                .fieldOfStudy(student.getSpecialization())
                 .build();
     }
 }
